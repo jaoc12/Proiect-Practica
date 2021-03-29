@@ -1,0 +1,23 @@
+﻿@model Moodle.Models.Section
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>@Model.Name</h2>
+
+@foreach (var file in Model.Files)
+{
+    <p>@file.Name</p>
+    <p>@file.UploadDate</p>
+    @Html.ActionLink("Download", "Download", "File", new { id = file.FileId }, null)
+    <br />
+}
+
+@using (Html.BeginForm("New", "File", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(c => c.CourseId)
+    <input type="file" name="upload" />
+    <input type="submit" />
+}
+

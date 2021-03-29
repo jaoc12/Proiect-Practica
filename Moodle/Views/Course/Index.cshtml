@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Courses";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var course in ViewBag.Courses)
+{
+    <div class="panel-body">
+        @Html.Label("Course", "Course:")
+        <br />
+        <p>@course.Name</p>
+    </div>
+    <br />
+}
