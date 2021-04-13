@@ -1,0 +1,14 @@
+﻿@model Moodle.Models.Section
+@{
+    ViewBag.Title = "New Section";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("New", "Section", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(s => s.CourseId)
+    @Html.TextBoxFor(s => s.Name)
+    <input type="submit" value="Create" class="btn btn-default" />
+}
+

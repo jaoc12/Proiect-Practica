@@ -1,0 +1,23 @@
+﻿@model List<Moodle.Models.Professor>
+@{
+    ViewBag.Title = "AllProfessors";
+}
+
+<h2>All Professors</h2>
+
+<ul>
+    @foreach (var professor in Model)
+    {
+    <li>
+        @Html.ActionLink(professor.ToString(), "Details", "Professor", new { id = professor.ProfessorId }, null)
+        <p>Courses: </p>
+        <ul>
+            @foreach (var course in professor.Courses)
+            {
+                <li>@Html.ActionLink(course.Name, "Details", "Course", new { id = course.CourseId }, null)</li>
+            }
+        </ul>
+    </li>
+    }
+</ul>
+

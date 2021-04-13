@@ -1,0 +1,35 @@
+﻿@model Moodle.Models.Professor
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Professor"))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.HiddenFor(p => p.ProfessorId)
+    <br />
+
+    @Html.Label("First Name", "Last Name:")
+    <br />
+    @Html.EditorFor(p => p.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(p => p.FirstName, "", new { @class = "text-danger" })
+    <br />
+
+    @Html.Label("Last Name", "Last Name:")
+    <br />
+    @Html.EditorFor(p => p.LastName, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(p => p.LastName, "", new { @class = "text-danger" })
+    <br />
+
+    @Html.Label("Teaching Level", "Teaching Level:")
+    <br />
+    @Html.EditorFor(p => p.GradDidactic, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(p => p.GradDidactic, "", new { @class = "text-danger" })
+    <br />
+
+    <button class="btn btn-primary" type="submit">Update</button>
+}
+<br />

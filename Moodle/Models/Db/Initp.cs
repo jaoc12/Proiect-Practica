@@ -10,10 +10,34 @@ namespace Moodle.Models.Db
     {
         protected override void Seed(DbCtx context)
         {
+            Professor professor = new Professor
+            {
+                ProfessorId = 1,
+                FirstName = "Professor",
+                LastName = "Professorson",
+                GradDidactic = "Ceva",
+                UserId = "e28a3fab-b9ea-4901-9ee2-06ec730efa6c"
+            };
+
+            context.Professors.Add(professor);
+
+            Student student = new Student
+            {
+                StudentId = 1,
+                FirstName = "Student",
+                LastName = "Studenson",
+                StudyYear = 1,
+                UserId = "2a03fc9c-df96-4ed2-a944-275834091549"
+            };
+
+            context.Students.Add(student);
+
             Course course = new Course
             {
                 CourseId = 1,
-                Name = "Info"
+                Name = "Info",
+                Professor = professor,
+                Students = new List<Student> { student}
             };
 
             context.Courses.Add(course);

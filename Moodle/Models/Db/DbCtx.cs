@@ -19,5 +19,9 @@ namespace Moodle.Models
         public DbSet<File> Files { get; set; }
 
         public DbSet<Section> Sections { get; set; }
+
+        public DbSet<Professor> Professors { get; set; }
+
+        public DbSet<Student> Students { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿@model Moodle.Models.Section
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = Model.Name;
@@ -9,15 +10,35 @@
 @foreach (var file in Model.Files)
 {
     <p>@file.Name</p>
+    <p>@file.Professor.ToString()</p>
     <p>@file.UploadDate</p>
-    @Html.ActionLink("Download", "Download", "File", new { id = file.FileId }, null)
-    <br />
+
+    if (User.IsInRole("Professor") || User.IsInRole("Student"))
+    {
+        @Html.ActionLink("Download", "Download", "File", new { id = file.FileId }, null)
+        <br />
+    }
+
+    if (User.IsInRole("Professor"))
+    {
+        if (User.Identity.GetUserId().Equals(Model.Course.Professor.UserId))
+        {
+            @Html.ActionLink("Delete File", "DeleteFile", "File", new { id = file.FileId }, null)
+            <br />
+        }
+    }
 }
 
-@using (Html.BeginForm("New", "File", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+@if (User.IsInRole("Professor"))
 {
-    @Html.HiddenFor(c => c.CourseId)
-    <input type="file" name="upload" />
-    <input type="submit" />
+    if (User.Identity.GetUserId().Equals(Model.Course.Professor.UserId))
+    {
+        using (Html.BeginForm("New", "File", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        @Html.HiddenFor(c => c.SectionId)
+        <input type="file" name="upload" />
+        <input type="submit" />
+        }
+    }
 }
 

@@ -1,4 +1,5 @@
 ﻿@model Moodle.Models.Course
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = Model.Name;
@@ -12,4 +13,12 @@
         <li>@Html.ActionLink(sec.Name, "Details", "Section", new { id = sec.SectionId }, null)</li>
     }
 </ul>
+
+@if (User.IsInRole("Professor"))
+{
+    if (User.Identity.GetUserId().Equals(Model.Professor.UserId))
+    {
+        @Html.ActionLink("Add a new section.", "New", "Section", new { id = Model.CourseId }, null);
+    }
+}
 

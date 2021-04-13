@@ -1,0 +1,30 @@
+﻿@model Moodle.Models.Course
+@{
+    ViewBag.Title = "AssignStudent";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(actionName: "AssignStudent", controllerName: "Course", method: FormMethod.Post))
+{
+    @Html.Label("Course", "Course:")
+    <br />
+    @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.CoursesList, "Value", "Text"), "Choose a Course", new { @class = "form-control" })
+    @Html.ValidationMessageFor(c => c.CourseId, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    @Html.LabelFor(c => c.StudentsList, "Choose students to add:")
+    <br />
+    for (int i = 0; i < Model.StudentsList.Count(); i++)
+    {
+        @Html.HiddenFor(c => c.StudentsList[i].Id)
+        @Html.HiddenFor(c => c.StudentsList[i].Name)
+        @Html.CheckBoxFor(c => c.StudentsList[i].Checked)
+        @Html.DisplayFor(c => c.StudentsList[i].Name)
+        <br />
+    }
+    <br />
+
+    <button class="btn btn-primary" type="submit">Create</button>
+}

@@ -21,5 +21,8 @@ namespace Moodle.Models
 
         public int SectionId { get; set; }
         public virtual Section Section { get; set; }
+
+        public int ProfessorId { get; set; }
+        public virtual Professor Professor { get; set; }
     }
 }

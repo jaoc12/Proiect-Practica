@@ -19,8 +19,9 @@ namespace Moodle.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Professor")]
         [HttpPost]
-        public ActionResult New(int courseId, HttpPostedFileBase upload)
+        public ActionResult New(int sectionId, HttpPostedFileBase upload)
         {
             if (ModelState.IsValid)
             {
@@ -30,8 +31,9 @@ namespace Moodle.Controllers
                     {
                         Name = System.IO.Path.GetFileName(upload.FileName),
                         UploadDate = DateTime.Now,
-                        SectionId = courseId,
-                        Type = upload.ContentType
+                        SectionId = sectionId,
+                        Type = upload.ContentType,
+                        ProfessorId = db.Sections.Find(sectionId).Course.Professor.ProfessorId
                     };
                     using (var reader = new System.IO.BinaryReader(upload.InputStream))
                     {
@@ -40,11 +42,12 @@ namespace Moodle.Controllers
                     db.Files.Add(avatar);
                     db.SaveChanges();
                 }
-                return RedirectToAction("Details", "Section", new { id = courseId});
+                return RedirectToAction("Details", "Section", new { id = sectionId});
             }
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Professor, Student")]
         [HttpGet]
         public ActionResult Download(int? id)
         {
@@ -54,6 +57,27 @@ namespace Moodle.Controllers
                 if (file != null)
                 {
                     return File(file.Content, file.Type, file.Name);
+                }
+                return HttpNotFound("Could not find the file with id " + id.ToString() + "!");
+            }
+            return HttpNotFound("Missing file id parameter!");
+        }
+
+        [Authorize(Roles = "Professor")]
+        [HttpGet]
+        public ActionResult DeleteFile(int? id)
+        {
+            if (id.HasValue)
+            {
+                File file = db.Files.Find(id);
+                if (file != null)
+                {
+                    int sectionId = file.SectionId;
+
+                    db.Files.Remove(file);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Section", new { id = sectionId });
                 }
                 return HttpNotFound("Could not find the file with id " + id.ToString() + "!");
             }
