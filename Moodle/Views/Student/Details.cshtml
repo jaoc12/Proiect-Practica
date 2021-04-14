@@ -1,20 +1,20 @@
-﻿@model Moodle.Models.Professor
+﻿@model Moodle.Models.Student
 @{
-    ViewBag.Title = "Professor Details";
+    ViewBag.Title = "Student Details";
 }
 
 <div class="panel panel-default">
     <div class="panel-body">
         @Html.Label("First Name", "First Name: ")
-        @Html.DisplayFor(p => p.FirstName)
+        @Html.DisplayFor(s => s.FirstName)
         <br />
 
         @Html.Label("Last Name", "Last Name: ")
-        @Html.DisplayFor(p => p.LastName)
+        @Html.DisplayFor(s => s.LastName)
         <br />
 
-        @Html.Label("Teaching Level", "Teaching Level: ")
-        @Html.DisplayFor(p => p.GradDidactic)
+        @Html.Label("Study Year", "Study Year: ")
+        @Html.DisplayFor(s => s.StudyYear)
         <br />
 
         <p>Courses: </p>
@@ -28,10 +28,10 @@
 </div>
 <br />
 
-@if (User.IsInRole("Professor") || User.IsInRole("Admin"))
+@if (User.IsInRole("Student") || User.IsInRole("Admin"))
 {
-    using (Html.BeginForm(actionName: "Edit", controllerName: "Professor", method: FormMethod.Get,
-        routeValues: new { id = Model.ProfessorId }))
+    using (Html.BeginForm(actionName: "Edit", controllerName: "Student", method: FormMethod.Get,
+        routeValues: new { id = Model.StudentId }))
     {
         <button style="margin-right:5px" class="btn btn-primary col-lg-1" type="submit">Update details</button>
     }
@@ -40,8 +40,8 @@
 
 @if (User.IsInRole("Admin"))
 {
-    using (Html.BeginForm(actionName: "Delete", controllerName: "Professor", method: FormMethod.Post,
-            routeValues: new { id = Model.ProfessorId }))
+    using (Html.BeginForm(actionName: "Delete", controllerName: "Student", method: FormMethod.Post,
+            routeValues: new { id = Model.StudentId }))
     {
         @Html.HttpMethodOverride(HttpVerbs.Delete)
         <button class="btn btn-primary col-lg-1" type="submit">Delete</button>

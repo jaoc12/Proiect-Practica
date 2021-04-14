@@ -27,7 +27,7 @@ namespace Moodle.Controllers
             {
                 if (upload != null && upload.ContentLength > 0)
                 {
-                    var avatar = new File
+                    var file = new File
                     {
                         Name = System.IO.Path.GetFileName(upload.FileName),
                         UploadDate = DateTime.Now,
@@ -37,9 +37,9 @@ namespace Moodle.Controllers
                     };
                     using (var reader = new System.IO.BinaryReader(upload.InputStream))
                     {
-                        avatar.Content = reader.ReadBytes(upload.ContentLength);
+                        file.Content = reader.ReadBytes(upload.ContentLength);
                     }
-                    db.Files.Add(avatar);
+                    db.Files.Add(file);
                     db.SaveChanges();
                 }
                 return RedirectToAction("Details", "Section", new { id = sectionId});

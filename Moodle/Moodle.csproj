@@ -180,6 +180,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProfessorController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
+    <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -373,6 +374,8 @@
     <Content Include="Views\Professor\Edit.cshtml" />
     <Content Include="Views\Professor\AllProfessors.cshtml" />
     <Content Include="Views\Professor\Details.cshtml" />
+    <Content Include="Views\Student\Details.cshtml" />
+    <Content Include="Views\Student\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

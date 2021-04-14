@@ -34,7 +34,7 @@ namespace Moodle.Controllers
                 {
                     if (!professor.UserId.Equals(User.Identity.GetUserId()))
                     {
-                        return HttpNotFound("The current user can't edit the professoe with the id" + id);
+                        return HttpNotFound("The current user can't edit the professor with the id" + id);
                     }
                 }
 
@@ -105,7 +105,7 @@ namespace Moodle.Controllers
                 }
                 db.Professors.Remove(professor);
                 db.SaveChanges();
-                return RedirectToAction("AllProfessors");
+                return RedirectToAction("Index", "Admin");
             }
             return HttpNotFound("Could not find the professor with id " + id.ToString() + "!");
         }
