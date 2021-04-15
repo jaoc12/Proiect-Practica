@@ -101,7 +101,7 @@ namespace Moodle.Controllers
                 }
                 foreach(Course course in professor.Courses.ToList())
                 {
-                    db.Courses.Remove(course);
+                    course.ProfessorId = null;
                 }
                 db.Professors.Remove(professor);
                 db.SaveChanges();

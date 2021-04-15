@@ -17,6 +17,7 @@ namespace Moodle.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly DbCtx db = new DbCtx();
 
         public AccountController()
         {
@@ -172,7 +173,6 @@ namespace Moodle.Controllers
             return View(model);
         }
 
-        private readonly DbCtx db = new DbCtx();
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -201,14 +201,17 @@ namespace Moodle.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     UserManager.AddToRole(user.Id, "Professor");
-                    db.Professors.Add(new Professor { 
+                    Professor professor = new Professor { 
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         GradDidactic = model.GradDidactic,
                         UserId = user.Id
-                    });
+                    };
 
-                    return RedirectToAction("Index", "Home");
+                    db.Professors.Add(professor);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Professor", new { id = professor.ProfessorId });
                 }
                 AddErrors(result);
             }
@@ -243,15 +246,18 @@ namespace Moodle.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     UserManager.AddToRole(user.Id, "Student");
-                    db.Students.Add(new Student
+                    Student student = new Student
                     {
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         StudyYear = model.StudyYear,
                         UserId = user.Id
-                    });
+                    };
 
-                    return RedirectToAction("Index", "Home");
+                    db.Students.Add(student);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Details", "Student", new { id = student.StudentId });
                 }
                 AddErrors(result);
             }
