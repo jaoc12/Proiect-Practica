@@ -83,13 +83,55 @@ namespace Moodle.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult AssignStudent(Course courseTemp)
+        public ActionResult AssignStudent(Course courseRequest)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("AssignStudent");
+                Course course = db.Courses.Find(courseRequest.CourseId);
+                var selectedStudents = courseRequest.StudentsList.Where(s => s.Checked).ToList();
+                if (TryUpdateModel(course))
+                {
+
+                    course.Students.Clear();
+                    course.Students = new List<Student>();
+                    for (int i = 0; i < selectedStudents.Count(); i++)
+                    {
+                        Student student = db.Students.Find(selectedStudents[i].Id);
+                        course.Students.Add(student);
+                    }
+
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Details", "Course", new { id = course.CourseId });
             }
             return RedirectToAction("AssignStudent");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public ActionResult ChangeProfessor()
+        {
+            Course course = new Course();
+            course.CoursesList = GetCourses();
+            course.ProfessorsList = GetProfessors();
+            return View(course);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult ChangeProfessor(Course courseRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                Course course = db.Courses.Find(courseRequest.CourseId);
+                if (TryUpdateModel(course))
+                {
+                    course.ProfessorId = courseRequest.ProfessorId;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Details", "Course", new { id = course.CourseId });
+            }
+            return RedirectToAction("ChangeProfessor");
         }
 
         [NonAction]
@@ -115,7 +157,7 @@ namespace Moodle.Controllers
             {
                 selectList.Add(new SelectListItem
                 {
-                    Value = course.ProfessorId.ToString(),
+                    Value = course.CourseId.ToString(),
                     Text = course.Name
                 });
             }

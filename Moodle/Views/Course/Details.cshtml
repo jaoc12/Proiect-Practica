@@ -5,14 +5,32 @@
     ViewBag.Title = Model.Name;
 }
 
-<h2>@Model.Name</h2>
+<div>
+    <h2>@Model.Name</h2>
+    <p> Course Taught by @Html.ActionLink(Model.Professor.ToString(), "Details", "Professor", new { id = Model.ProfessorId }, null)</p>
+</div>
 
-<ul>
-    @foreach (var sec in Model.Sections)
-    {
-        <li>@Html.ActionLink(sec.Name, "Details", "Section", new { id = sec.SectionId }, null)</li>
-    }
-</ul>
+<div class="d-flex p-2">
+    <div class="col-2">
+        <p>Sections:</p>
+        <ul>
+            @foreach (var section in Model.Sections)
+            {
+                <li>@Html.ActionLink(section.Name, "Details", "Section", new { id = section.SectionId }, null)</li>
+            }
+        </ul>
+    </div>
+
+    <div>
+        <p>Students:</p>
+        <ul>
+            @foreach(var student in Model.Students)
+            {
+                <li>@Html.ActionLink(student.ToString(), "Details", "Student", new { id = student.StudentId }, null)</li>
+            }
+        </ul>
+    </div>
+</div>
 
 @if (User.IsInRole("Professor"))
 {

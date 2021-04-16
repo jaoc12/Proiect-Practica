@@ -1,0 +1,23 @@
+﻿@model Moodle.Models.Course
+@{
+    ViewBag.Title = "Change a course professor";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(actionName: "ChangeProfessor", controllerName: "Course", method: FormMethod.Post))
+{
+    @Html.Label("Course", "Course:")
+    <br />
+    @Html.DropDownListFor(c => c.CourseId, new SelectList(Model.CoursesList, "Value", "Text"), "Choose a Course", new { @class = "form-control" })
+    @Html.ValidationMessageFor(c => c.CourseId, "", new { @class = "text-danger" })
+    <br />
+    <br />
+
+    @Html.Label("Professor", "Professor:")
+    <br />
+    @Html.DropDownListFor(c => c.ProfessorId, new SelectList(Model.ProfessorsList, "Value", "Text"), "Choose a professor", new { @class = "form-control" })
+    <br />
+
+    <button class="btn btn-primary" type="submit">Update</button>
+}
