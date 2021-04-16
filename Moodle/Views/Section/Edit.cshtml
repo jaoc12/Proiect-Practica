@@ -1,0 +1,24 @@
+﻿@model Moodle.Models.Section
+@{
+    ViewBag.Title = "Edit Section";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Section"))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    @Html.HiddenFor(s => s.SectionId)
+    <br />
+
+    @Html.Label("Name", "Name:")
+    <br />
+    @Html.EditorFor(s => s.Name, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(s => s.Name, "", new { @class = "text-danger" })
+    <br />
+
+    <button class="btn btn-primary" type="submit">Update</button>
+}
+<br />
+

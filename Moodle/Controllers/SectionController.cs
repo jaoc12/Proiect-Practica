@@ -70,5 +70,70 @@ namespace Moodle.Controllers
             }
             return HttpNotFound("Missing course id parameter!");
         }
+
+        [Authorize(Roles = "Professor, Admin")]
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            if (id.HasValue)
+            {
+                Section section = db.Sections.Find(id);
+
+                if (section == null)
+                {
+                    return HttpNotFound("Could not find the section with id " + id.ToString() + "!");
+                }
+
+                if (!User.IsInRole("Admin"))
+                {
+                    if (!section.Course.Professor.UserId.Equals(User.Identity.GetUserId()))
+                    {
+                        return HttpNotFound("The current user can't edit the section with the id: " + id);
+                    }
+                }
+
+                return View(section);
+            }
+            return HttpNotFound("Missing section id parameter!");
+        }
+
+        [Authorize(Roles = "Professor, Admin")]
+        [HttpPut]
+        public ActionResult Edit(int id, Section sectionRequest)
+        {
+            Section section = db.Sections.Find(id);
+
+            if (ModelState.IsValid)
+            {
+                if (TryUpdateModel(section))
+                {
+                    section.Name = sectionRequest.Name;
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Details", "Section", new { id = id });
+            }
+            return View(sectionRequest);
+        }
+
+        [Authorize(Roles = "Professor,Admin")]
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            Section section = db.Sections.Find(id);
+            if (section != null)
+            {
+                int courseId = section.CourseId;
+                foreach (File file in section.Files.ToList())
+                {
+                    db.Files.Remove(file);
+                }
+
+                db.Sections.Remove(section);
+                db.SaveChanges();
+
+                return RedirectToAction("Details", "Course", new { id = courseId });
+            }
+            return HttpNotFound("Could not find the section with id " + id.ToString() + "!");
+        }
     }
 }

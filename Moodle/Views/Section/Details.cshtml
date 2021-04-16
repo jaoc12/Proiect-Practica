@@ -8,6 +8,23 @@
 <div>
     <h2>@Model.Name</h2>
     <p>Section of @Html.ActionLink(Model.Course.Name, "Details", "Course", new { id = Model.CourseId }, null)</p>
+    @if (User.IsInRole("Professor"))
+    {
+    <div class="d-flex">
+        @using (Html.BeginForm(actionName: "Edit", controllerName: "Section", method: FormMethod.Get,
+        routeValues: new { id = Model.SectionId }))
+        {
+            <button class="btn btn-primary m-1" type="submit">Change name</button>
+        }
+
+        @using (Html.BeginForm(actionName: "Delete", controllerName: "Section", method: FormMethod.Post,
+            routeValues: new { id = Model.SectionId }))
+        {
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-primary m-1" type="submit">Delete section</button>
+        }
+    </div>
+    }
 </div>
 
 @if (Model.Files.Count() != 0)
