@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Moodle.Models.Db
 {
-    public class Initp : DropCreateDatabaseAlways<DbCtx>
+    public class Initp : DropCreateDatabaseIfModelChanges<DbCtx>
     {
         protected override void Seed(DbCtx context)
         {
