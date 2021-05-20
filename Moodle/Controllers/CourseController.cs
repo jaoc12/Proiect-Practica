@@ -179,5 +179,28 @@ namespace Moodle.Controllers
             }
             return checkboxList;
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            Course course = db.Courses.Find(id);
+            if (course != null)
+            {
+                foreach (Section section in course.Sections.ToList())
+                {
+                    foreach (File file in section.Files.ToList())
+                    {
+                        db.Files.Remove(file);
+                    }
+                }
+
+                db.Courses.Remove(course);
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Admin");
+            }
+            return HttpNotFound("Could not find the course with id " + id.ToString() + "!");
+        }
     }
 }

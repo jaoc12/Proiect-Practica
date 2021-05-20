@@ -24,7 +24,7 @@
     <div>
         <p>Students:</p>
         <ul>
-            @foreach(var student in Model.Students)
+            @foreach (var student in Model.Students)
             {
                 <li>@Html.ActionLink(student.ToString(), "Details", "Student", new { id = student.StudentId }, null)</li>
             }
@@ -37,6 +37,16 @@
     if (User.Identity.GetUserId().Equals(Model.Professor.UserId))
     {
         @Html.ActionLink("Add a new section.", "New", "Section", new { id = Model.CourseId }, null);
+    }
+}
+
+@if (User.IsInRole("Admin"))
+{
+    using (Html.BeginForm(actionName: "Delete", controllerName: "Course", method: FormMethod.Post,
+            routeValues: new { id = Model.CourseId }))
+    {
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-primary m-1" type="submit">Delete course</button>
     }
 }
 
